@@ -1,0 +1,2173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RecipeStory - Share Your Culinary Journey</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-orange: #FF6B35;
+            --sage-green: #6B9080;
+            --cream: #F4F4F4;
+            --dark-charcoal: #2D3142;
+            --light-orange: #FFB399;
+            --dark-green: #4A6B5F;
+            --white: #FFFFFF;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 8px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Lato', sans-serif;
+            color: var(--dark-charcoal);
+            background-color: var(--cream);
+            line-height: 1.6;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+        }
+
+        /* Navigation */
+        nav {
+            background-color: var(--white);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-orange);
+            cursor: pointer;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--dark-charcoal);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            cursor: pointer;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-orange);
+        }
+
+        .nav-links a.active {
+            color: var(--primary-orange);
+            border-bottom: 2px solid var(--primary-orange);
+        }
+
+        /* Views */
+        .view {
+            display: none;
+        }
+
+        .view.active {
+            display: block;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--sage-green) 0%, var(--dark-green) 100%);
+            color: var(--white);
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+
+        .hero-content {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+
+        .hero-tagline {
+            font-size: 1.3rem;
+            font-style: italic;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+        }
+
+        .hero-prompt {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 2.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background-color: var(--primary-orange);
+            color: var(--white);
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: var(--shadow);
+        }
+
+        .btn:hover {
+            background-color: #E85A28;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .btn-secondary {
+            background-color: var(--sage-green);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--dark-green);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--primary-orange);
+            color: var(--primary-orange);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary-orange);
+            color: var(--white);
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            color: var(--dark-charcoal);
+        }
+
+        /* Recipe Cards */
+        .recipe-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .recipe-card {
+            background: var(--white);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .recipe-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .recipe-image {
+            width: 100%;
+            height: 220px;
+            background: linear-gradient(135deg, var(--light-orange) 0%, var(--primary-orange) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: var(--white);
+        }
+
+        .recipe-content {
+            padding: 1.5rem;
+        }
+
+        .recipe-title {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--dark-charcoal);
+        }
+
+        .recipe-author {
+            font-size: 0.9rem;
+            color: #777;
+            margin-bottom: 1rem;
+        }
+
+        .recipe-meta {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        .recipe-tags {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            padding: 0.3rem 0.8rem;
+            background-color: var(--sage-green);
+            color: var(--white);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .tag-difficulty {
+            background-color: var(--primary-orange);
+        }
+
+        .recipe-story-excerpt {
+            font-size: 0.95rem;
+            color: #666;
+            line-height: 1.6;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        /* Recipe Detail View */
+        .recipe-detail {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--white);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .recipe-detail-header {
+            padding: 3rem 3rem 2rem;
+            background: linear-gradient(135deg, rgba(107, 144, 128, 0.1) 0%, rgba(255, 107, 53, 0.1) 100%);
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--dark-charcoal);
+            text-decoration: none;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .back-btn:hover {
+            color: var(--primary-orange);
+        }
+
+        .recipe-detail-title {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .recipe-detail-author {
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 2rem;
+        }
+
+        .recipe-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-box {
+            background: var(--white);
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: #777;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-orange);
+        }
+
+        .recipe-detail-body {
+            padding: 3rem;
+        }
+
+        .recipe-story {
+            background: linear-gradient(135deg, rgba(107, 144, 128, 0.15) 0%, rgba(255, 107, 53, 0.15) 100%);
+            padding: 2rem;
+            border-radius: 12px;
+            border-left: 4px solid var(--primary-orange);
+            margin-bottom: 3rem;
+        }
+
+        .recipe-story h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: var(--dark-charcoal);
+        }
+
+        .recipe-story p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #555;
+        }
+
+        .recipe-section {
+            margin-bottom: 3rem;
+        }
+
+        .recipe-section h3 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: var(--dark-charcoal);
+        }
+
+        .ingredients-list {
+            list-style: none;
+        }
+
+        .ingredients-list li {
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            background: var(--cream);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .ingredients-list input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .instructions-list {
+            list-style: none;
+            counter-reset: step-counter;
+        }
+
+        .instructions-list li {
+            counter-increment: step-counter;
+            margin-bottom: 1.5rem;
+            padding-left: 3.5rem;
+            position: relative;
+        }
+
+        .instructions-list li::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 2.5rem;
+            height: 2.5rem;
+            background: var(--primary-orange);
+            color: var(--white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .recipe-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .social-share {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .social-btn {
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            cursor: pointer;
+            border: none;
+        }
+
+        .social-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .fb { background-color: #1877F2; }
+        .pinterest { background-color: #E60023; }
+        .twitter { background-color: #1DA1F2; }
+        .whatsapp { background-color: #25D366; }
+
+        /* Form Styles */
+        .form-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--white);
+            border-radius: 16px;
+            padding: 3rem;
+            box-shadow: var(--shadow);
+        }
+
+        .form-progress {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .form-progress::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #ddd;
+            z-index: 0;
+        }
+
+        .progress-line {
+            position: absolute;
+            top: 20px;
+            left: 0;
+            height: 2px;
+            background: var(--primary-orange);
+            z-index: 1;
+            transition: width 0.3s;
+        }
+
+        .progress-step {
+            flex: 1;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .progress-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #ddd;
+            color: #999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 0.5rem;
+            font-weight: 700;
+            transition: all 0.3s;
+        }
+
+        .progress-step.active .progress-circle {
+            background: var(--primary-orange);
+            color: var(--white);
+        }
+
+        .progress-step.completed .progress-circle {
+            background: var(--sage-green);
+            color: var(--white);
+        }
+
+        .progress-label {
+            font-size: 0.85rem;
+            color: #999;
+        }
+
+        .progress-step.active .progress-label,
+        .progress-step.completed .progress-label {
+            color: var(--dark-charcoal);
+            font-weight: 600;
+        }
+
+        .form-step {
+            display: none;
+        }
+
+        .form-step.active {
+            display: block;
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--dark-charcoal);
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="number"],
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: 'Lato', sans-serif;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-orange);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .radio-option input[type="radio"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .dynamic-list {
+            margin-top: 1rem;
+        }
+
+        .dynamic-item {
+            display: grid;
+            grid-template-columns: 1fr 1fr 2fr auto;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            align-items: end;
+        }
+
+        .remove-btn {
+            padding: 0.8rem 1rem;
+            background: #dc3545;
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .remove-btn:hover {
+            background: #c82333;
+        }
+
+        .add-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.8rem 1.5rem;
+            background: var(--sage-green);
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: 1rem;
+            transition: all 0.3s;
+        }
+
+        .add-btn:hover {
+            background: var(--dark-green);
+        }
+
+        .instruction-item {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            align-items: start;
+        }
+
+        .instruction-item textarea {
+            flex: 1;
+        }
+
+        .form-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+            gap: 1rem;
+        }
+
+        .char-counter {
+            font-size: 0.85rem;
+            color: #777;
+            text-align: right;
+            margin-top: 0.5rem;
+        }
+
+        .prompt-text {
+            font-size: 0.9rem;
+            color: #666;
+            font-style: italic;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background: rgba(107, 144, 128, 0.1);
+            border-radius: 8px;
+        }
+
+        /* Browse Page */
+        .browse-container {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        .filter-sidebar {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            sticky;
+            top: 80px;
+        }
+
+        .filter-section {
+            margin-bottom: 2rem;
+        }
+
+        .filter-section h4 {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            color: var(--dark-charcoal);
+        }
+
+        .filter-section label {
+            display: block;
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+        }
+
+        .filter-section input[type="checkbox"] {
+            margin-right: 0.5rem;
+            cursor: pointer;
+        }
+
+        .search-bar {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #ddd;
+            border-radius: 50px;
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .search-bar:focus {
+            outline: none;
+            border-color: var(--primary-orange);
+        }
+
+        .sort-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .sort-container select {
+            padding: 0.8rem 1.2rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        /* Community Page */
+        .community-hero {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, rgba(107, 144, 128, 0.15) 0%, rgba(255, 107, 53, 0.15) 100%);
+            border-radius: 16px;
+            margin-bottom: 3rem;
+        }
+
+        .community-hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .community-hero p {
+            font-size: 1.3rem;
+            color: #555;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .stat-card {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: var(--shadow);
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--primary-orange);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-description {
+            font-size: 1.1rem;
+            color: #666;
+        }
+
+        .benefits-section {
+            background: var(--white);
+            padding: 3rem;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            margin: 3rem 0;
+        }
+
+        .benefits-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .benefit-card {
+            text-align: center;
+            padding: 1.5rem;
+        }
+
+        .benefit-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .benefit-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .benefit-card p {
+            color: #666;
+        }
+
+        /* Success Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--white);
+            padding: 3rem;
+            border-radius: 16px;
+            max-width: 500px;
+            text-align: center;
+            box-shadow: var(--shadow-hover);
+            animation: modalIn 0.3s;
+        }
+
+        @keyframes modalIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .success-icon {
+            font-size: 4rem;
+            color: var(--sage-green);
+            margin-bottom: 1rem;
+        }
+
+        .modal-content h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .modal-content p {
+            color: #666;
+            margin-bottom: 2rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                gap: 1rem;
+                font-size: 0.9rem;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero-tagline {
+                font-size: 1rem;
+            }
+
+            .recipe-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .browse-container {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-sidebar {
+                position: relative;
+                top: 0;
+            }
+
+            .recipe-detail-title {
+                font-size: 2rem;
+            }
+
+            .form-container {
+                padding: 1.5rem;
+            }
+
+            .dynamic-item {
+                grid-template-columns: 1fr;
+            }
+
+            .community-hero h1 {
+                font-size: 2rem;
+            }
+
+            .stat-number {
+                font-size: 2rem;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .error-message {
+            color: #dc3545;
+            font-size: 0.9rem;
+            margin-top: 0.3rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo" onclick="showView('home')">RecipeStory</div>
+            <ul class="nav-links">
+                <li><a onclick="showView('home')" id="nav-home" class="active">Home</a></li>
+                <li><a onclick="showView('browse')" id="nav-browse">Browse Recipes</a></li>
+                <li><a onclick="showView('share')" id="nav-share">Share Recipe</a></li>
+                <li><a onclick="showView('community')" id="nav-community">Community</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Home View -->
+    <div id="home-view" class="view active">
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Every Recipe Tells a Story</h1>
+                <p class="hero-tagline">From your kitchen to hearts worldwide</p>
+                <div class="hero-prompt">
+                    Share your favorite recipe that brings people together! Whether it's your grandmother's secret curry, a quick weeknight pasta, or your own experimental dessert, tell us how it's made and why it's special. Include ingredients, step-by-step instructions, preparation time, and a short story about what inspired the dish.
+                </div>
+                <button class="btn" onclick="showView('share')">Share Your Recipe</button>
+            </div>
+        </section>
+
+        <!-- Featured Recipes -->
+        <section class="container">
+            <h2 class="section-title">Featured Recipes</h2>
+            <div class="recipe-grid" id="featured-recipes"></div>
+        </section>
+    </div>
+
+    <!-- Browse View -->
+    <div id="browse-view" class="view">
+        <div class="container">
+            <h2 class="section-title">Browse All Recipes</h2>
+            
+            <div class="browse-container">
+                <!-- Filter Sidebar -->
+                <aside class="filter-sidebar">
+                    <h3>Filters</h3>
+                    
+                    <div class="filter-section">
+                        <h4>Category</h4>
+                        <label><input type="checkbox" class="filter-category" value="Breakfast"> Breakfast</label>
+                        <label><input type="checkbox" class="filter-category" value="Lunch"> Lunch</label>
+                        <label><input type="checkbox" class="filter-category" value="Dinner"> Dinner</label>
+                        <label><input type="checkbox" class="filter-category" value="Dessert"> Dessert</label>
+                        <label><input type="checkbox" class="filter-category" value="Snack"> Snack</label>
+                    </div>
+
+                    <div class="filter-section">
+                        <h4>Cuisine</h4>
+                        <label><input type="checkbox" class="filter-cuisine" value="Indian"> Indian</label>
+                        <label><input type="checkbox" class="filter-cuisine" value="Italian"> Italian</label>
+                        <label><input type="checkbox" class="filter-cuisine" value="American"> American</label>
+                        <label><input type="checkbox" class="filter-cuisine" value="Thai"> Thai</label>
+                        <label><input type="checkbox" class="filter-cuisine" value="Fusion"> Fusion</label>
+                    </div>
+
+                    <div class="filter-section">
+                        <h4>Difficulty</h4>
+                        <label><input type="checkbox" class="filter-difficulty" value="Easy"> Easy</label>
+                        <label><input type="checkbox" class="filter-difficulty" value="Medium"> Medium</label>
+                        <label><input type="checkbox" class="filter-difficulty" value="Hard"> Hard</label>
+                    </div>
+
+                    <div class="filter-section">
+                        <h4>Dietary Tags</h4>
+                        <label><input type="checkbox" class="filter-tags" value="vegan"> Vegan</label>
+                        <label><input type="checkbox" class="filter-tags" value="vegetarian"> Vegetarian</label>
+                        <label><input type="checkbox" class="filter-tags" value="gluten-free"> Gluten-Free</label>
+                        <label><input type="checkbox" class="filter-tags" value="quick"> Quick</label>
+                    </div>
+
+                    <button class="btn" onclick="clearFilters()">Clear Filters</button>
+                </aside>
+
+                <!-- Recipe Grid -->
+                <div>
+                    <input type="text" class="search-bar" id="search-input" placeholder="Search recipes..." oninput="applyFilters()">
+                    
+                    <div class="sort-container">
+                        <span><strong id="recipe-count">8</strong> recipes found</span>
+                        <select id="sort-select" onchange="applyFilters()">
+                            <option value="recent">Most Recent</option>
+                            <option value="time">Shortest Time</option>
+                            <option value="popular">Most Popular</option>
+                        </select>
+                    </div>
+
+                    <div class="recipe-grid" id="browse-recipes"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recipe Detail View -->
+    <div id="recipe-detail-view" class="view">
+        <div class="container">
+            <div class="recipe-detail" id="recipe-detail-content"></div>
+        </div>
+    </div>
+
+    <!-- Share Recipe View -->
+    <div id="share-view" class="view">
+        <div class="container">
+            <div class="form-container">
+                <h2 class="section-title">Share Your Recipe</h2>
+                
+                <!-- Progress Indicator -->
+                <div class="form-progress">
+                    <div class="progress-line" id="progress-line"></div>
+                    <div class="progress-step active" data-step="1">
+                        <div class="progress-circle">1</div>
+                        <div class="progress-label">Basics</div>
+                    </div>
+                    <div class="progress-step" data-step="2">
+                        <div class="progress-circle">2</div>
+                        <div class="progress-label">Time</div>
+                    </div>
+                    <div class="progress-step" data-step="3">
+                        <div class="progress-circle">3</div>
+                        <div class="progress-label">Ingredients</div>
+                    </div>
+                    <div class="progress-step" data-step="4">
+                        <div class="progress-circle">4</div>
+                        <div class="progress-label">Instructions</div>
+                    </div>
+                    <div class="progress-step" data-step="5">
+                        <div class="progress-circle">5</div>
+                        <div class="progress-label">Story</div>
+                    </div>
+                    <div class="progress-step" data-step="6">
+                        <div class="progress-circle">6</div>
+                        <div class="progress-label">Finish</div>
+                    </div>
+                </div>
+
+                <form id="recipe-form">
+                    <!-- Step 1: Recipe Basics -->
+                    <div class="form-step active" data-step="1">
+                        <h3>Recipe Basics</h3>
+                        
+                        <div class="form-group">
+                            <label for="recipe-title">Recipe Title *</label>
+                            <input type="text" id="recipe-title" required>
+                            <div class="error-message hidden" id="error-title">Please enter a recipe title</div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="recipe-category">Category *</label>
+                                <select id="recipe-category" required>
+                                    <option value="">Select Category</option>
+                                    <option value="Breakfast">Breakfast</option>
+                                    <option value="Lunch">Lunch</option>
+                                    <option value="Dinner">Dinner</option>
+                                    <option value="Dessert">Dessert</option>
+                                    <option value="Snack">Snack</option>
+                                    <option value="Beverage">Beverage</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="recipe-cuisine">Cuisine Type *</label>
+                                <select id="recipe-cuisine" required>
+                                    <option value="">Select Cuisine</option>
+                                    <option value="Indian">Indian</option>
+                                    <option value="Italian">Italian</option>
+                                    <option value="Chinese">Chinese</option>
+                                    <option value="Mexican">Mexican</option>
+                                    <option value="American">American</option>
+                                    <option value="Thai">Thai</option>
+                                    <option value="Mediterranean">Mediterranean</option>
+                                    <option value="Fusion">Fusion</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Difficulty Level *</label>
+                            <div class="radio-group">
+                                <div class="radio-option">
+                                    <input type="radio" id="difficulty-easy" name="difficulty" value="Easy" required>
+                                    <label for="difficulty-easy">Easy</label>
+                                </div>
+                                <div class="radio-option">
+                                    <input type="radio" id="difficulty-medium" name="difficulty" value="Medium">
+                                    <label for="difficulty-medium">Medium</label>
+                                </div>
+                                <div class="radio-option">
+                                    <input type="radio" id="difficulty-hard" name="difficulty" value="Hard">
+                                    <label for="difficulty-hard">Hard</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Time & Servings -->
+                    <div class="form-step" data-step="2">
+                        <h3>Time &amp; Servings</h3>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="prep-time">Preparation Time (minutes) *</label>
+                                <input type="number" id="prep-time" min="1" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="cook-time">Cooking Time (minutes) *</label>
+                                <input type="number" id="cook-time" min="1" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="servings">Servings *</label>
+                                <input type="number" id="servings" min="1" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Ingredients -->
+                    <div class="form-step" data-step="3">
+                        <h3>Ingredients</h3>
+                        
+                        <div id="ingredients-container" class="dynamic-list"></div>
+                        
+                        <button type="button" class="add-btn" onclick="addIngredient()">+ Add Ingredient</button>
+                    </div>
+
+                    <!-- Step 4: Instructions -->
+                    <div class="form-step" data-step="4">
+                        <h3>Step-by-Step Instructions</h3>
+                        
+                        <div id="instructions-container" class="dynamic-list"></div>
+                        
+                        <button type="button" class="add-btn" onclick="addInstruction()">+ Add Step</button>
+                    </div>
+
+                    <!-- Step 5: Your Story -->
+                    <div class="form-step" data-step="5">
+                        <h3>Your Story</h3>
+                        
+                        <div class="prompt-text">
+                            What makes this recipe special? Share the story behind it - who taught you, when you first made it, why it's meaningful, or memories associated with it.
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="recipe-story">Recipe Story *</label>
+                            <textarea id="recipe-story" rows="8" required oninput="updateCharCounter()"></textarea>
+                            <div class="char-counter" id="char-counter">0 characters (recommended 100-500 words)</div>
+                        </div>
+                    </div>
+
+                    <!-- Step 6: Final Touches -->
+                    <div class="form-step" data-step="6">
+                        <h3>Final Touches</h3>
+                        
+                        <div class="form-group">
+                            <label for="recipe-tags">Tags (comma-separated)</label>
+                            <input type="text" id="recipe-tags" placeholder="e.g., vegetarian, quick, comfort food">
+                            <small style="color: #666;">Add relevant tags like vegetarian, vegan, gluten-free, quick, etc.</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="author-name">Your Name *</label>
+                            <input type="text" id="author-name" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Recipe Image</label>
+                            <div style="padding: 2rem; background: var(--cream); border: 2px dashed #ddd; border-radius: 8px; text-align: center; color: #999;">
+                                📷 Image upload would go here<br>
+                                <small>Feature coming soon!</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Navigation Buttons -->
+                    <div class="form-navigation">
+                        <button type="button" class="btn btn-secondary" id="prev-btn" onclick="previousStep()" style="display: none;">Previous</button>
+                        <button type="button" class="btn" id="next-btn" onclick="nextStep()">Next</button>
+                        <button type="submit" class="btn" id="submit-btn" style="display: none;">Submit Recipe</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Community View -->
+    <div id="community-view" class="view">
+        <div class="container">
+            <div class="community-hero">
+                <h1>Join Our Food-Loving Community</h1>
+                <p>Bringing people together through food, stories, and shared traditions</p>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">10,000+</div>
+                    <div class="stat-description">Recipes Shared</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">25,000+</div>
+                    <div class="stat-description">Home Cooks</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">150+</div>
+                    <div class="stat-description">Countries</div>
+                </div>
+            </div>
+
+            <div class="benefits-section">
+                <h2>Why Share Your Recipe?</h2>
+                <div class="benefits-grid">
+                    <div class="benefit-card">
+                        <div class="benefit-icon">💚</div>
+                        <h3>Preserve Traditions</h3>
+                        <p>Keep family recipes and culinary heritage alive for future generations</p>
+                    </div>
+                    <div class="benefit-card">
+                        <div class="benefit-icon">🌍</div>
+                        <h3>Connect Globally</h3>
+                        <p>Share your culture and learn from home cooks around the world</p>
+                    </div>
+                    <div class="benefit-card">
+                        <div class="benefit-icon">📖</div>
+                        <h3>Tell Your Story</h3>
+                        <p>Every recipe has a story - share the memories and emotions behind the food</p>
+                    </div>
+                    <div class="benefit-card">
+                        <div class="benefit-icon">👨‍🍳</div>
+                        <h3>Inspire Others</h3>
+                        <p>Help others create delicious meals and build their own cooking confidence</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="benefits-section">
+                <h2>Guidelines for Sharing</h2>
+                <div style="max-width: 700px; margin: 0 auto; line-height: 1.8; color: #555;">
+                    <p style="margin-bottom: 1rem;">✓ <strong>Be authentic:</strong> Share your genuine experience and personal connection to the recipe</p>
+                    <p style="margin-bottom: 1rem;">✓ <strong>Be detailed:</strong> Include specific measurements, timing, and helpful tips</p>
+                    <p style="margin-bottom: 1rem;">✓ <strong>Be respectful:</strong> Credit original sources and honor cultural traditions</p>
+                    <p style="margin-bottom: 1rem;">✓ <strong>Be supportive:</strong> Engage with other cooks and share your experiences</p>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 3rem;">
+                <button class="btn" onclick="showView('share')">Share Your Recipe Now</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div id="success-modal" class="modal">
+        <div class="modal-content">
+            <div class="success-icon">✓</div>
+            <h2>Recipe Submitted Successfully!</h2>
+            <p>Thank you for sharing your culinary story with our community.</p>
+            <button class="btn" onclick="closeModal()">View All Recipes</button>
+        </div>
+    </div>
+
+    <script>
+        // Sample recipes data
+        const recipes = [
+            {
+                id: 1,
+                title: "Grandmother's Secret Chicken Curry",
+                author: "Priya Sharma",
+                category: "Dinner",
+                cuisine: "Indian",
+                difficulty: "Medium",
+                prepTime: "20 minutes",
+                cookTime: "45 minutes",
+                servings: 6,
+                story: "This curry recipe has been passed down through three generations in my family. Every Sunday, my grandmother would wake up early to prepare this for our entire family gathering. The secret ingredient - a pinch of dried fenugreek leaves - makes all the difference. Now, whenever I make this dish, the aroma takes me back to those cherished Sunday afternoons filled with laughter and love.",
+                ingredients: [
+                    "2 lbs chicken, cut into pieces",
+                    "3 large onions, finely chopped",
+                    "4 tomatoes, pureed",
+                    "2 tbsp ginger-garlic paste",
+                    "1/2 cup yogurt",
+                    "2 tsp garam masala",
+                    "1 tsp turmeric powder",
+                    "2 tsp coriander powder",
+                    "1 tsp cumin seeds",
+                    "1 tsp dried fenugreek leaves (secret ingredient)",
+                    "Fresh cilantro for garnish",
+                    "Salt to taste",
+                    "4 tbsp cooking oil"
+                ],
+                instructions: [
+                    "Heat oil in a large pot and add cumin seeds until they splutter",
+                    "Add chopped onions and sauté until golden brown (about 10 minutes)",
+                    "Add ginger-garlic paste and cook for 2 minutes until raw smell disappears",
+                    "Add all spices (turmeric, coriander, garam masala) and stir for 1 minute",
+                    "Add tomato puree and cook until oil separates from masala (about 8 minutes)",
+                    "Add chicken pieces and coat well with the masala",
+                    "Add yogurt gradually, stirring continuously",
+                    "Add 1 cup water, cover and simmer for 30 minutes until chicken is cooked",
+                    "Crush dried fenugreek leaves between palms and add to curry",
+                    "Simmer for 5 more minutes, garnish with cilantro and serve hot"
+                ],
+                tags: "comfort food, family recipe, traditional, Sunday dinner"
+            },
+            {
+                id: 2,
+                title: "Quick 15-Minute Pasta Aglio e Olio",
+                author: "Marco Rossi",
+                category: "Dinner",
+                cuisine: "Italian",
+                difficulty: "Easy",
+                prepTime: "5 minutes",
+                cookTime: "10 minutes",
+                servings: 2,
+                story: "As a busy working parent, I discovered this recipe during a particularly hectic week when I had nothing in the fridge except pasta, garlic, and olive oil. What started as desperation became our family's favorite weeknight meal. My kids now request this simple pasta over any fancy restaurant dish. It proves that the best recipes don't need complicated ingredients - just good technique and love.",
+                ingredients: [
+                    "8 oz spaghetti",
+                    "6 cloves garlic, thinly sliced",
+                    "1/2 cup extra virgin olive oil",
+                    "1 tsp red pepper flakes",
+                    "Fresh parsley, chopped",
+                    "Parmesan cheese for serving",
+                    "Salt to taste"
+                ],
+                instructions: [
+                    "Bring a large pot of salted water to boil and cook spaghetti according to package directions",
+                    "While pasta cooks, heat olive oil in a large pan over medium heat",
+                    "Add sliced garlic and red pepper flakes, cook until garlic is golden (2-3 minutes)",
+                    "Reserve 1 cup pasta water before draining",
+                    "Add drained pasta to the garlic oil, toss to combine",
+                    "Add pasta water gradually to create a light sauce",
+                    "Toss with fresh parsley and serve immediately with Parmesan"
+                ],
+                tags: "quick meal, weeknight dinner, pantry staples, kid-friendly"
+            },
+            {
+                id: 3,
+                title: "Experimental Mango Cheesecake",
+                author: "Aisha Patel",
+                category: "Dessert",
+                cuisine: "Fusion",
+                difficulty: "Hard",
+                prepTime: "40 minutes",
+                cookTime: "60 minutes",
+                servings: 12,
+                story: "Growing up in Mumbai but studying in New York, I always missed the sweet, juicy Alphonso mangoes of home. One day, I decided to combine my childhood favorite fruit with the classic American cheesecake I'd learned to love. After many failed attempts and a very patient roommate, I finally created this fusion dessert. It's now my signature dish at potlucks, bridging my two worlds in every slice.",
+                ingredients: [
+                    "2 cups graham cracker crumbs",
+                    "1/2 cup melted butter",
+                    "32 oz cream cheese, softened",
+                    "1 cup sugar",
+                    "4 large eggs",
+                    "2 cups mango puree (from fresh mangoes)",
+                    "1/2 cup heavy cream",
+                    "1 tsp vanilla extract",
+                    "2 tbsp cornstarch",
+                    "Mango slices for topping"
+                ],
+                instructions: [
+                    "Preheat oven to 325°F (165°C)",
+                    "Mix graham cracker crumbs with melted butter and press into a 9-inch springform pan",
+                    "Beat cream cheese and sugar until smooth and fluffy (about 5 minutes)",
+                    "Add eggs one at a time, mixing well after each addition",
+                    "Mix in mango puree, heavy cream, vanilla, and cornstarch until well combined",
+                    "Pour mixture over crust",
+                    "Bake for 60 minutes or until center is almost set",
+                    "Turn off oven, leave cheesecake inside with door slightly open for 1 hour",
+                    "Refrigerate for at least 4 hours or overnight",
+                    "Top with fresh mango slices before serving"
+                ],
+                tags: "fusion cuisine, special occasion, make ahead, cultural heritage"
+            },
+            {
+                id: 4,
+                title: "Mom's Comfort Chicken Soup",
+                author: "Sarah Johnson",
+                category: "Lunch",
+                cuisine: "American",
+                difficulty: "Easy",
+                prepTime: "15 minutes",
+                cookTime: "40 minutes",
+                servings: 6,
+                story: "Whenever I was sick as a child, my mom would make this soup. The smell alone would make me feel better. She'd bring it to my room in my favorite bowl, and sit with me while I ate. Now, as a mother myself, I make this same soup for my own children. It's more than just food - it's love in a bowl, a connection to my childhood, and a tradition I'm proud to pass on.",
+                ingredients: [
+                    "1 whole chicken, cut into pieces",
+                    "8 cups water",
+                    "3 carrots, sliced",
+                    "3 celery stalks, chopped",
+                    "1 large onion, diced",
+                    "3 cloves garlic, minced",
+                    "2 bay leaves",
+                    "1 tsp dried thyme",
+                    "8 oz egg noodles",
+                    "Fresh dill for garnish",
+                    "Salt and pepper to taste"
+                ],
+                instructions: [
+                    "Place chicken pieces in a large pot with water, bring to boil",
+                    "Skim off any foam from the surface",
+                    "Add onion, garlic, bay leaves, thyme, salt, and pepper",
+                    "Reduce heat and simmer for 30 minutes",
+                    "Remove chicken, let cool, then shred the meat",
+                    "Strain broth and return to pot",
+                    "Add carrots and celery, cook for 10 minutes",
+                    "Add egg noodles and cook according to package directions",
+                    "Return shredded chicken to pot",
+                    "Garnish with fresh dill and serve hot"
+                ],
+                tags: "comfort food, healing meal, family tradition, homemade"
+            },
+            {
+                id: 5,
+                title: "Spicy Thai Basil Chicken",
+                author: "David Chen",
+                category: "Dinner",
+                cuisine: "Thai",
+                difficulty: "Medium",
+                prepTime: "15 minutes",
+                cookTime: "15 minutes",
+                servings: 4,
+                story: "During a backpacking trip through Thailand, I stumbled upon a small street vendor in Bangkok who made the most incredible basil chicken. I watched him cook, trying to memorize every move. Back home, I spent months perfecting this recipe, even growing Thai basil in my apartment. Every time I make it, I'm transported back to those bustling Bangkok streets and the kindness of that street vendor who let a curious traveler watch him work.",
+                ingredients: [
+                    "1.5 lbs chicken thigh, sliced",
+                    "5-6 Thai chili peppers, chopped",
+                    "6 cloves garlic, minced",
+                    "1 cup Thai basil leaves",
+                    "2 tbsp oyster sauce",
+                    "1 tbsp soy sauce",
+                    "1 tbsp fish sauce",
+                    "1 tsp sugar",
+                    "1 red bell pepper, sliced",
+                    "3 tbsp vegetable oil",
+                    "Jasmine rice for serving"
+                ],
+                instructions: [
+                    "Heat oil in a wok over high heat until smoking",
+                    "Add garlic and chilies, stir-fry for 30 seconds",
+                    "Add chicken and stir-fry until cooked through (about 5 minutes)",
+                    "Add bell pepper and cook for 2 minutes",
+                    "Mix oyster sauce, soy sauce, fish sauce, and sugar in a small bowl",
+                    "Pour sauce into wok and toss everything together",
+                    "Add Thai basil leaves and toss until just wilted",
+                    "Serve immediately over jasmine rice"
+                ],
+                tags: "spicy, travel-inspired, Asian cuisine, quick dinner"
+            },
+            {
+                id: 6,
+                title: "Lazy Sunday Pancakes",
+                author: "Emma Williams",
+                category: "Breakfast",
+                cuisine: "American",
+                difficulty: "Easy",
+                prepTime: "10 minutes",
+                cookTime: "20 minutes",
+                servings: 4,
+                story: "Sunday mornings in our house are sacred. No rushing, no alarms, just the smell of pancakes and the sound of laughter. This recipe came together one Sunday when I combined my grandmother's buttermilk trick with my own vanilla bean addition. Now it's our weekly tradition - my husband makes the coffee, I make the pancakes, and our kids set the table. These aren't just pancakes; they're our family's way of slowing down and being present together.",
+                ingredients: [
+                    "2 cups all-purpose flour",
+                    "2 tbsp sugar",
+                    "2 tsp baking powder",
+                    "1 tsp baking soda",
+                    "1/2 tsp salt",
+                    "2 cups buttermilk",
+                    "2 large eggs",
+                    "1/4 cup melted butter",
+                    "1 tsp vanilla extract",
+                    "Butter for cooking",
+                    "Maple syrup for serving"
+                ],
+                instructions: [
+                    "In a large bowl, whisk together flour, sugar, baking powder, baking soda, and salt",
+                    "In another bowl, whisk buttermilk, eggs, melted butter, and vanilla",
+                    "Pour wet ingredients into dry ingredients and mix until just combined (lumps are okay!)",
+                    "Let batter rest for 5 minutes",
+                    "Heat a griddle or pan over medium heat and add a small amount of butter",
+                    "Pour 1/4 cup batter for each pancake",
+                    "Cook until bubbles form on surface, then flip",
+                    "Cook other side until golden brown (about 2 minutes)",
+                    "Serve hot with butter and maple syrup"
+                ],
+                tags: "breakfast, family tradition, weekend brunch, fluffy"
+            },
+            {
+                id: 7,
+                title: "Homemade Pizza Margherita",
+                author: "Giuseppe Marino",
+                category: "Dinner",
+                cuisine: "Italian",
+                difficulty: "Medium",
+                prepTime: "90 minutes",
+                cookTime: "15 minutes",
+                servings: 4,
+                story: "Learning to make pizza from scratch was my pandemic project. Armed with online tutorials and a dream, I turned my tiny kitchen into a pizzeria. After dozens of attempts and flour everywhere, I finally mastered the dough. The first time I pulled a perfect Margherita from my oven, with the cheese bubbling and the basil aromatic, I literally cried. This recipe represents perseverance, learning, and the joy of mastering something difficult.",
+                ingredients: [
+                    "3 cups bread flour",
+                    "1 packet active dry yeast",
+                    "1 cup warm water",
+                    "2 tbsp olive oil",
+                    "1 tsp salt",
+                    "1 tsp sugar",
+                    "1 can crushed San Marzano tomatoes",
+                    "16 oz fresh mozzarella, sliced",
+                    "Fresh basil leaves",
+                    "Extra virgin olive oil for drizzling"
+                ],
+                instructions: [
+                    "Dissolve yeast and sugar in warm water, let sit for 5 minutes until foamy",
+                    "Mix flour and salt in a large bowl",
+                    "Add yeast mixture and olive oil to flour, mix until dough forms",
+                    "Knead for 10 minutes until smooth and elastic",
+                    "Place in oiled bowl, cover, let rise for 1 hour until doubled",
+                    "Preheat oven to highest setting (500-550°F) with pizza stone inside",
+                    "Divide dough into 4 portions, stretch each into thin rounds",
+                    "Spread thin layer of crushed tomatoes on dough",
+                    "Add mozzarella slices and drizzle with olive oil",
+                    "Bake for 10-12 minutes until crust is golden and cheese bubbles",
+                    "Top with fresh basil leaves immediately after removing from oven"
+                ],
+                tags: "homemade, Italian classic, learning experience, weekend project"
+            },
+            {
+                id: 8,
+                title: "Vegan Chocolate Brownies",
+                author: "Maya Thompson",
+                category: "Dessert",
+                cuisine: "American",
+                difficulty: "Easy",
+                prepTime: "15 minutes",
+                cookTime: "25 minutes",
+                servings: 16,
+                story: "When my best friend went vegan, I was determined to prove that vegan desserts could be just as indulgent as traditional ones. After much experimentation, these brownies became my triumph - they're so fudgy and rich that no one believes they're vegan until I tell them. I've converted many skeptics with these brownies, showing that compassion and deliciousness can coexist beautifully.",
+                ingredients: [
+                    "1 cup all-purpose flour",
+                    "1 cup sugar",
+                    "1/2 cup cocoa powder",
+                    "1/2 tsp baking powder",
+                    "1/2 tsp salt",
+                    "1/2 cup vegetable oil",
+                    "1/2 cup non-dairy milk",
+                    "1 tsp vanilla extract",
+                    "1/2 cup vegan chocolate chips"
+                ],
+                instructions: [
+                    "Preheat oven to 350°F (175°C) and grease an 8x8 inch pan",
+                    "In a large bowl, mix flour, sugar, cocoa powder, baking powder, and salt",
+                    "Add oil, non-dairy milk, and vanilla extract to dry ingredients",
+                    "Mix until just combined, don't overmix",
+                    "Fold in chocolate chips",
+                    "Pour batter into prepared pan",
+                    "Bake for 25-30 minutes until a toothpick comes out with moist crumbs",
+                    "Let cool completely before cutting into squares"
+                ],
+                tags: "vegan, plant-based, chocolate, easy dessert"
+            }
+        ];
+
+        // State management
+        let currentView = 'home';
+        let currentStep = 1;
+        let currentRecipe = null;
+        let filteredRecipes = [...recipes];
+
+        // Initialize app
+        document.addEventListener('DOMContentLoaded', function() {
+            displayFeaturedRecipes();
+            displayBrowseRecipes();
+            initializeForm();
+            setupFilters();
+        });
+
+        // View management
+        function showView(viewName) {
+            // Hide all views
+            document.querySelectorAll('.view').forEach(view => view.classList.remove('active'));
+            
+            // Show selected view
+            document.getElementById(viewName + '-view').classList.add('active');
+            
+            // Update navigation
+            document.querySelectorAll('.nav-links a').forEach(link => link.classList.remove('active'));
+            document.getElementById('nav-' + viewName).classList.add('active');
+            
+            currentView = viewName;
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+
+        // Display featured recipes
+        function displayFeaturedRecipes() {
+            const container = document.getElementById('featured-recipes');
+            const featured = recipes.slice(0, 4);
+            
+            container.innerHTML = featured.map(recipe => createRecipeCard(recipe)).join('');
+        }
+
+        // Display browse recipes
+        function displayBrowseRecipes() {
+            const container = document.getElementById('browse-recipes');
+            container.innerHTML = filteredRecipes.map(recipe => createRecipeCard(recipe)).join('');
+            document.getElementById('recipe-count').textContent = filteredRecipes.length;
+        }
+
+        // Create recipe card HTML
+        function createRecipeCard(recipe) {
+            const emoji = getRecipeEmoji(recipe.category);
+            const storyExcerpt = recipe.story.substring(0, 150) + '...';
+            
+            return `
+                <div class="recipe-card" onclick="showRecipeDetail(${recipe.id})">
+                    <div class="recipe-image">${emoji}</div>
+                    <div class="recipe-content">
+                        <h3 class="recipe-title">${recipe.title}</h3>
+                        <p class="recipe-author">Shared by ${recipe.author}</p>
+                        <div class="recipe-meta">
+                            <span class="meta-item">⏱️ ${recipe.cookTime}</span>
+                            <span class="meta-item">🍽️ ${recipe.servings} servings</span>
+                        </div>
+                        <div class="recipe-tags">
+                            <span class="tag">${recipe.category}</span>
+                            <span class="tag tag-difficulty">${recipe.difficulty}</span>
+                        </div>
+                        <p class="recipe-story-excerpt">${storyExcerpt}</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Get emoji based on category
+        function getRecipeEmoji(category) {
+            const emojis = {
+                'Breakfast': '🥞',
+                'Lunch': '🥗',
+                'Dinner': '🍝',
+                'Dessert': '🍰',
+                'Snack': '🍪',
+                'Beverage': '☕'
+            };
+            return emojis[category] || '🍽️';
+        }
+
+        // Show recipe detail
+        function showRecipeDetail(recipeId) {
+            currentRecipe = recipes.find(r => r.id === recipeId);
+            if (!currentRecipe) return;
+            
+            const container = document.getElementById('recipe-detail-content');
+            const emoji = getRecipeEmoji(currentRecipe.category);
+            
+            container.innerHTML = `
+                <div class="recipe-detail-header">
+                    <a class="back-btn" onclick="showView('browse')">← Back to Recipes</a>
+                    <h1 class="recipe-detail-title">${currentRecipe.title}</h1>
+                    <p class="recipe-detail-author">Shared by ${currentRecipe.author}</p>
+                    
+                    <div class="recipe-stats">
+                        <div class="stat-box">
+                            <div class="stat-label">Prep Time</div>
+                            <div class="stat-value">${currentRecipe.prepTime}</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-label">Cook Time</div>
+                            <div class="stat-value">${currentRecipe.cookTime}</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-label">Servings</div>
+                            <div class="stat-value">${currentRecipe.servings}</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-label">Difficulty</div>
+                            <div class="stat-value">${currentRecipe.difficulty}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="recipe-tags">
+                        <span class="tag">${currentRecipe.category}</span>
+                        <span class="tag">${currentRecipe.cuisine}</span>
+                    </div>
+                </div>
+                
+                <div class="recipe-detail-body">
+                    <div class="recipe-story">
+                        <h3>💚 The Story Behind This Recipe</h3>
+                        <p>${currentRecipe.story}</p>
+                    </div>
+                    
+                    <div class="recipe-section">
+                        <h3>📝 Ingredients</h3>
+                        <ul class="ingredients-list">
+                            ${currentRecipe.ingredients.map(ing => `
+                                <li>
+                                    <input type="checkbox" id="ing-${ing.replace(/\s/g, '-')}">
+                                    <label for="ing-${ing.replace(/\s/g, '-')}">${ing}</label>
+                                </li>
+                            `).join('')}
+                        </ul>
+                    </div>
+                    
+                    <div class="recipe-section">
+                        <h3>👨‍🍳 Instructions</h3>
+                        <ol class="instructions-list">
+                            ${currentRecipe.instructions.map(inst => `<li>${inst}</li>`).join('')}
+                        </ol>
+                    </div>
+                    
+                    <div class="recipe-section">
+                        <h3>🏷️ Tags</h3>
+                        <div class="recipe-tags">
+                            ${currentRecipe.tags.split(',').map(tag => `<span class="tag">${tag.trim()}</span>`).join('')}
+                        </div>
+                    </div>
+                    
+                    <div class="recipe-actions">
+                        <button class="btn" onclick="window.print()">🖨️ Print Recipe</button>
+                    </div>
+                    
+                    <div class="recipe-section">
+                        <h3>Share This Recipe</h3>
+                        <div class="social-share">
+                            <button class="social-btn fb" onclick="shareRecipe('facebook')">Facebook</button>
+                            <button class="social-btn pinterest" onclick="shareRecipe('pinterest')">Pinterest</button>
+                            <button class="social-btn twitter" onclick="shareRecipe('twitter')">Twitter</button>
+                            <button class="social-btn whatsapp" onclick="shareRecipe('whatsapp')">WhatsApp</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            showView('recipe-detail');
+        }
+
+        // Share recipe
+        function shareRecipe(platform) {
+            const url = window.location.href;
+            const text = `Check out this amazing recipe: ${currentRecipe.title} by ${currentRecipe.author}`;
+            
+            const urls = {
+                facebook: `https://www.facebook.com/sharer/sharer.php?u=${url}`,
+                pinterest: `https://pinterest.com/pin/create/button/?url=${url}&description=${text}`,
+                twitter: `https://twitter.com/intent/tweet?text=${text}&url=${url}`,
+                whatsapp: `https://wa.me/?text=${text} ${url}`
+            };
+            
+            if (urls[platform]) {
+                window.open(urls[platform], '_blank', 'width=600,height=400');
+            }
+        }
+
+        // Filter functionality
+        function setupFilters() {
+            const filterInputs = document.querySelectorAll('.filter-sidebar input[type="checkbox"]');
+            filterInputs.forEach(input => {
+                input.addEventListener('change', applyFilters);
+            });
+        }
+
+        function applyFilters() {
+            const searchTerm = document.getElementById('search-input').value.toLowerCase();
+            const sortBy = document.getElementById('sort-select').value;
+            
+            // Get selected filters
+            const selectedCategories = Array.from(document.querySelectorAll('.filter-category:checked')).map(el => el.value);
+            const selectedCuisines = Array.from(document.querySelectorAll('.filter-cuisine:checked')).map(el => el.value);
+            const selectedDifficulties = Array.from(document.querySelectorAll('.filter-difficulty:checked')).map(el => el.value);
+            const selectedTags = Array.from(document.querySelectorAll('.filter-tags:checked')).map(el => el.value);
+            
+            // Filter recipes
+            filteredRecipes = recipes.filter(recipe => {
+                // Search filter
+                const matchesSearch = !searchTerm || 
+                    recipe.title.toLowerCase().includes(searchTerm) ||
+                    recipe.author.toLowerCase().includes(searchTerm) ||
+                    recipe.story.toLowerCase().includes(searchTerm);
+                
+                // Category filter
+                const matchesCategory = selectedCategories.length === 0 || selectedCategories.includes(recipe.category);
+                
+                // Cuisine filter
+                const matchesCuisine = selectedCuisines.length === 0 || selectedCuisines.includes(recipe.cuisine);
+                
+                // Difficulty filter
+                const matchesDifficulty = selectedDifficulties.length === 0 || selectedDifficulties.includes(recipe.difficulty);
+                
+                // Tags filter
+                const matchesTags = selectedTags.length === 0 || selectedTags.some(tag => 
+                    recipe.tags.toLowerCase().includes(tag.toLowerCase())
+                );
+                
+                return matchesSearch && matchesCategory && matchesCuisine && matchesDifficulty && matchesTags;
+            });
+            
+            // Sort recipes
+            if (sortBy === 'time') {
+                filteredRecipes.sort((a, b) => {
+                    const timeA = parseInt(a.cookTime);
+                    const timeB = parseInt(b.cookTime);
+                    return timeA - timeB;
+                });
+            } else if (sortBy === 'popular') {
+                filteredRecipes.sort(() => Math.random() - 0.5);
+            }
+            
+            displayBrowseRecipes();
+        }
+
+        function clearFilters() {
+            document.querySelectorAll('.filter-sidebar input[type="checkbox"]').forEach(input => {
+                input.checked = false;
+            });
+            document.getElementById('search-input').value = '';
+            applyFilters();
+        }
+
+        // Form management
+        function initializeForm() {
+            // Add initial ingredient and instruction fields
+            addIngredient();
+            addInstruction();
+            
+            // Form submission
+            document.getElementById('recipe-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                submitRecipe();
+            });
+        }
+
+        function nextStep() {
+            if (!validateStep(currentStep)) return;
+            
+            // Mark current step as completed
+            document.querySelector(`.progress-step[data-step="${currentStep}"]`).classList.add('completed');
+            
+            // Hide current step
+            document.querySelector(`.form-step[data-step="${currentStep}"]`).classList.remove('active');
+            
+            currentStep++;
+            
+            // Show next step
+            document.querySelector(`.form-step[data-step="${currentStep}"]`).classList.add('active');
+            document.querySelector(`.progress-step[data-step="${currentStep}"]`).classList.add('active');
+            
+            // Update progress line
+            const progress = ((currentStep - 1) / 5) * 100;
+            document.getElementById('progress-line').style.width = progress + '%';
+            
+            // Update buttons
+            document.getElementById('prev-btn').style.display = 'block';
+            
+            if (currentStep === 6) {
+                document.getElementById('next-btn').style.display = 'none';
+                document.getElementById('submit-btn').style.display = 'block';
+            }
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+
+        function previousStep() {
+            // Hide current step
+            document.querySelector(`.form-step[data-step="${currentStep}"]`).classList.remove('active');
+            document.querySelector(`.progress-step[data-step="${currentStep}"]`).classList.remove('active');
+            
+            currentStep--;
+            
+            // Show previous step
+            document.querySelector(`.form-step[data-step="${currentStep}"]`).classList.add('active');
+            
+            // Update progress line
+            const progress = ((currentStep - 1) / 5) * 100;
+            document.getElementById('progress-line').style.width = progress + '%';
+            
+            // Update buttons
+            if (currentStep === 1) {
+                document.getElementById('prev-btn').style.display = 'none';
+            }
+            
+            document.getElementById('next-btn').style.display = 'block';
+            document.getElementById('submit-btn').style.display = 'none';
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+
+        function validateStep(step) {
+            if (step === 1) {
+                const title = document.getElementById('recipe-title').value.trim();
+                const category = document.getElementById('recipe-category').value;
+                const cuisine = document.getElementById('recipe-cuisine').value;
+                const difficulty = document.querySelector('input[name="difficulty"]:checked');
+                
+                if (!title) {
+                    alert('Please enter a recipe title');
+                    return false;
+                }
+                if (!category) {
+                    alert('Please select a category');
+                    return false;
+                }
+                if (!cuisine) {
+                    alert('Please select a cuisine type');
+                    return false;
+                }
+                if (!difficulty) {
+                    alert('Please select a difficulty level');
+                    return false;
+                }
+            }
+            
+            if (step === 2) {
+                const prepTime = document.getElementById('prep-time').value;
+                const cookTime = document.getElementById('cook-time').value;
+                const servings = document.getElementById('servings').value;
+                
+                if (!prepTime || prepTime <= 0) {
+                    alert('Please enter a valid preparation time');
+                    return false;
+                }
+                if (!cookTime || cookTime <= 0) {
+                    alert('Please enter a valid cooking time');
+                    return false;
+                }
+                if (!servings || servings <= 0) {
+                    alert('Please enter a valid number of servings');
+                    return false;
+                }
+            }
+            
+            if (step === 3) {
+                const ingredients = document.querySelectorAll('.ingredient-name');
+                let hasValid = false;
+                ingredients.forEach(ing => {
+                    if (ing.value.trim()) hasValid = true;
+                });
+                if (!hasValid) {
+                    alert('Please add at least one ingredient');
+                    return false;
+                }
+            }
+            
+            if (step === 4) {
+                const instructions = document.querySelectorAll('.instruction-text');
+                let hasValid = false;
+                instructions.forEach(inst => {
+                    if (inst.value.trim()) hasValid = true;
+                });
+                if (!hasValid) {
+                    alert('Please add at least one instruction step');
+                    return false;
+                }
+            }
+            
+            if (step === 5) {
+                const story = document.getElementById('recipe-story').value.trim();
+                if (!story || story.length < 50) {
+                    alert('Please share your story (at least 50 characters)');
+                    return false;
+                }
+            }
+            
+            return true;
+        }
+
+        function addIngredient() {
+            const container = document.getElementById('ingredients-container');
+            const index = container.children.length;
+            
+            const html = `
+                <div class="dynamic-item">
+                    <div class="form-group">
+                        <input type="text" class="ingredient-quantity" placeholder="Quantity">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="ingredient-unit" placeholder="Unit">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="ingredient-name" placeholder="Ingredient name" required>
+                    </div>
+                    <button type="button" class="remove-btn" onclick="removeElement(this)">×</button>
+                </div>
+            `;
+            
+            container.insertAdjacentHTML('beforeend', html);
+        }
+
+        function addInstruction() {
+            const container = document.getElementById('instructions-container');
+            const index = container.children.length + 1;
+            
+            const html = `
+                <div class="instruction-item">
+                    <div class="form-group" style="flex: 1;">
+                        <label>Step ${index}</label>
+                        <textarea class="instruction-text" rows="3" placeholder="Describe this step in detail..." required></textarea>
+                    </div>
+                    <button type="button" class="remove-btn" onclick="removeInstruction(this)">×</button>
+                </div>
+            `;
+            
+            container.insertAdjacentHTML('beforeend', html);
+        }
+
+        function removeElement(button) {
+            button.parentElement.remove();
+        }
+
+        function removeInstruction(button) {
+            button.parentElement.remove();
+            // Renumber steps
+            const instructions = document.querySelectorAll('.instruction-item');
+            instructions.forEach((item, index) => {
+                item.querySelector('label').textContent = `Step ${index + 1}`;
+            });
+        }
+
+        function updateCharCounter() {
+            const text = document.getElementById('recipe-story').value;
+            const count = text.length;
+            document.getElementById('char-counter').textContent = 
+                `${count} characters (recommended 100-500 words)`;
+        }
+
+        function submitRecipe() {
+            if (!validateStep(6)) return;
+            
+            // Collect form data
+            const newRecipe = {
+                id: recipes.length + 1,
+                title: document.getElementById('recipe-title').value,
+                author: document.getElementById('author-name').value,
+                category: document.getElementById('recipe-category').value,
+                cuisine: document.getElementById('recipe-cuisine').value,
+                difficulty: document.querySelector('input[name="difficulty"]:checked').value,
+                prepTime: document.getElementById('prep-time').value + ' minutes',
+                cookTime: document.getElementById('cook-time').value + ' minutes',
+                servings: parseInt(document.getElementById('servings').value),
+                story: document.getElementById('recipe-story').value,
+                ingredients: [],
+                instructions: [],
+                tags: document.getElementById('recipe-tags').value
+            };
+            
+            // Collect ingredients
+            const ingredientItems = document.querySelectorAll('.dynamic-item');
+            ingredientItems.forEach(item => {
+                const quantity = item.querySelector('.ingredient-quantity').value;
+                const unit = item.querySelector('.ingredient-unit').value;
+                const name = item.querySelector('.ingredient-name').value;
+                if (name.trim()) {
+                    newRecipe.ingredients.push(`${quantity} ${unit} ${name}`.trim());
+                }
+            });
+            
+            // Collect instructions
+            const instructionItems = document.querySelectorAll('.instruction-text');
+            instructionItems.forEach(item => {
+                if (item.value.trim()) {
+                    newRecipe.instructions.push(item.value.trim());
+                }
+            });
+            
+            // Add to recipes array
+            recipes.push(newRecipe);
+            
+            // Show success modal
+            document.getElementById('success-modal').classList.add('active');
+            
+            // Reset form
+            document.getElementById('recipe-form').reset();
+            currentStep = 1;
+            document.querySelectorAll('.progress-step').forEach(step => {
+                step.classList.remove('active', 'completed');
+            });
+            document.querySelector('.progress-step[data-step="1"]').classList.add('active');
+            document.querySelectorAll('.form-step').forEach(step => step.classList.remove('active'));
+            document.querySelector('.form-step[data-step="1"]').classList.add('active');
+            document.getElementById('progress-line').style.width = '0%';
+            document.getElementById('prev-btn').style.display = 'none';
+            document.getElementById('next-btn').style.display = 'block';
+            document.getElementById('submit-btn').style.display = 'none';
+            
+            // Clear dynamic fields
+            document.getElementById('ingredients-container').innerHTML = '';
+            document.getElementById('instructions-container').innerHTML = '';
+            addIngredient();
+            addInstruction();
+        }
+
+        function closeModal() {
+            document.getElementById('success-modal').classList.remove('active');
+            filteredRecipes = [...recipes];
+            displayBrowseRecipes();
+            displayFeaturedRecipes();
+            showView('browse');
+        }
+    </script>
+</body>
+</html>
